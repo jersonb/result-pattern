@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreExample.Data.Models;
+
 [Table("seller")]
 public class Seller
 {
