@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="MyResult.Tests/MyResult.Tests.csproj" Id="0fcdcbec-274b-4bed-88e3-eb1181215676" />
   <Project Path="MyResult/MyResult.csproj" Id="5a98835a-6ee3-459d-ae7d-68cae3c75e50" />
+  <Project Path="StoreExample.Api/StoreExample.Api.csproj" Id="34bcfa19-ed08-4895-bbca-81ad41827fee" />
 </Solution>
