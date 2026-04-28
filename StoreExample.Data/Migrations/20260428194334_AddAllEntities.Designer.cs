@@ -11,29 +11,14 @@ using StoreExample.Data;
 namespace StoreExample.Data.Migrations
 {
     [DbContext(typeof(StoreExampleDataContext))]
-    [Migration("20260428170458_Init")]
-    partial class Init
+    [Migration("20260428194334_AddAllEntities")]
+    partial class AddAllEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.2");
-
-            modelBuilder.Entity("ProductSale", b =>
-                {
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SalesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ProductsId", "SalesId");
-
-                    b.HasIndex("SalesId");
-
-                    b.ToTable("ProductSale");
-                });
 
             modelBuilder.Entity("StoreExample.Data.Models.Customer", b =>
                 {
@@ -139,21 +124,6 @@ namespace StoreExample.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("seller");
-                });
-
-            modelBuilder.Entity("ProductSale", b =>
-                {
-                    b.HasOne("StoreExample.Data.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StoreExample.Data.Models.Sale", null)
-                        .WithMany()
-                        .HasForeignKey("SalesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("StoreExample.Data.Models.ProductSale", b =>

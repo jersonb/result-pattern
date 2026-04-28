@@ -2,37 +2,44 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StoreExample.Api.Controllers.Abstractions;
+using StoreExample.Application.Abstractions;
+using StoreExample.Application.Models;
 using StoreExample.Data;
 using StoreExample.Data.Models;
 
 namespace StoreExample.Api.Controllers;
 
 [ApiVersion("1")]
-public class ProductsController(StoreExampleDataContext context) : StoreExampleApiControllerBase
+public class ProductsController(StoreExampleDataContext context, IProductService service) : StoreExampleApiControllerBase
 {
-    // GET: api/Products
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProduct()
+    public async Task<IActionResult> GetProduct(CancellationToken cancellationToken)
     {
-        return await context.Product.ToListAsync();
-    }
-
-    // GET: api/Products/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
-    {
-        var product = await context.Product.FindAsync(id);
-
-        if (product == null)
+        var result = await service.Get(cancellationToken);
+        return result switch
         {
-            return NotFound();
-        }
-
-        return product;
+            { IsSuccess: true } => Ok(result.Value),
+            { IsFail: true, Error.Code: ApplicationErrors.UNEXPECTED } => InternalServerError(result),
+            { IsFail: true, Error.Code: ApplicationErrors.CANCELED } => BadRequest(result),
+            _ => BadRequest(result)
+        };
     }
 
-    // PUT: api/Products/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetProduct(int id, CancellationToken cancellationToken)
+    {
+        var result = await service.Get(id, cancellationToken);
+
+        return result switch
+        {
+            { IsSuccess: true } => Ok(result.Value),
+            { IsFail: true, Error.Code: ApplicationErrors.NOT_FOUND } => NotFound(result),
+            { IsFail: true, Error.Code: ApplicationErrors.UNEXPECTED } => InternalServerError(result),
+            { IsFail: true, Error.Code: ApplicationErrors.CANCELED } => BadRequest(result),
+            _ => BadRequest(result)
+        };
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> PutProduct(int id, Product product)
     {

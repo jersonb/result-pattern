@@ -6,4 +6,4 @@ param (
 )
 
 
-dotnet ef migrations add $name -c StoreExampleDataContext -s ..\StoreExample.Api\StoreExample.Api.csproj -p .\StoreExample.Data\StoreExample.Data.csproj
+dotnet ef migrations add $name -c StoreExampleDataContext -s ..\StoreExample.Api\StoreExample.Api.csproj -p ..\StoreExample.Data\StoreExample.Data.csproj

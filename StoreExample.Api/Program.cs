@@ -1,6 +1,8 @@
-﻿using Asp.Versioning;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using StoreExample.Api.Configurations;
+using StoreExample.Application;
+using StoreExample.Application.Abstractions;
 using StoreExample.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,32 +16,17 @@ ArgumentException.ThrowIfNullOrEmpty(connectionStringDatabase);
 services.AddDbContext<StoreExampleDataContext>(options =>
     options.UseSqlite(connectionStringDatabase));
 
+services.AddScoped<IProductService, ProductService>();
+
 services.AddControllers();
 
-services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer((document, context, cancelationToken) =>
-    {
-        document.Info.Title = "Store Example API";
-        document.Info.Description = "An example API for a store.";
-        document.Info.Version = "v1";
-        return Task.CompletedTask;
-    });
-});
-
-services
-    .AddApiVersioning(options =>
-{
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.ReportApiVersions = true;
-}).AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
-});
+services.AddCustomOpenApi();
+services.AddLocalizationResources();
 
 var app = builder.Build();
+
+app.UseCustomCors();
+app.UseCustomRequestLocalization();
 
 if (app.Environment.IsDevelopment())
 {

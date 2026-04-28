@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StoreExample.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class AddAllEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,30 +104,6 @@ namespace StoreExample.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ProductSale",
-                columns: table => new
-                {
-                    ProductsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SalesId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductSale", x => new { x.ProductsId, x.SalesId });
-                    table.ForeignKey(
-                        name: "FK_ProductSale_product_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "product",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductSale_sale_SalesId",
-                        column: x => x.SalesId,
-                        principalTable: "sale",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_product_sale_product_id",
                 table: "product_sale",
@@ -137,11 +113,6 @@ namespace StoreExample.Data.Migrations
                 name: "IX_product_sale_sale_id",
                 table: "product_sale",
                 column: "sale_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSale_SalesId",
-                table: "ProductSale",
-                column: "SalesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_sale_customer_id",
@@ -159,9 +130,6 @@ namespace StoreExample.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "product_sale");
-
-            migrationBuilder.DropTable(
-                name: "ProductSale");
 
             migrationBuilder.DropTable(
                 name: "product");

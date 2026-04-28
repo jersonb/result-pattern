@@ -10,11 +10,15 @@
 		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="10.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
 		<PackageReference Include="Scalar.AspNetCore.Microsoft" Version="2.14.6" />
-	</ItemGroup>
 
+
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\MyResult\MyResult.csproj" />
-		<ProjectReference Include="..\StoreExample.Data\StoreExample.Data.csproj" />
+	  <ProjectReference Include="..\StoreExample.Application\StoreExample.Application.csproj" />
 	</ItemGroup>
 
 </Project>
