@@ -1,4 +1,15 @@
+﻿using Microsoft.EntityFrameworkCore;
+using StoreExample.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+var connectionStringDatabase = configuration.GetConnectionString("StoreExampleApiContext");
+
+ArgumentException.ThrowIfNullOrEmpty(connectionStringDatabase);
+
+builder.Services.AddDbContext<StoreExampleDataContext>(options =>
+    options.UseSqlite(connectionStringDatabase));
 
 var services = builder.Services;
 
