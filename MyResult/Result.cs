@@ -37,24 +37,16 @@ public class Result<TValue>
     }
 
     public static implicit operator TValue(Result<TValue> value)
-    {
-        return value.Value;
-    }
+        => value.Value;
 
     public static implicit operator Result<TValue>(TValue value)
-    {
-        return new(value);
-    }
+        => new(value);
 
     public static implicit operator bool(Result<TValue> value)
-    {
-        return value is { IsNull: false, IsSuccess: true };
-    }
+        => value is { IsNull: false, IsSuccess: true };
 
     public static implicit operator Result<TValue>(ErrorResult error)
-    {
-        return new Result<TValue>(error);
-    }
+        => new(error);
 }
 
 public static partial class Result
@@ -63,11 +55,11 @@ public static partial class Result
 
     public static Result<TValue> Create<TValue>(TValue value) => value;
 
-    public static Result<TValue> CreateError<TValue>(TValue _) => ErrorResult.Empty;
+    public static Result<TValue> CreateError<TValue>() => ErrorResult.Empty;
 
-    public static Result<TValue> CreateError<TValue>(TValue _, string code) => ErrorResult.CreateError(code);
+    public static Result<TValue> CreateError<TValue>(string code) => ErrorResult.CreateError(code);
 
-    public static Result<TValue> CreateError<TValue>(TValue _, string code, string message) => ErrorResult.CreateError(code, message);
+    public static Result<TValue> CreateError<TValue>(string code, string message) => ErrorResult.CreateError(code, message);
 
-    public static Result<TValue> CreateError<TValue>(TValue _, string code, List<string> messages) => ErrorResult.CreateError(code, messages);
+    public static Result<TValue> CreateError<TValue>(string code, List<string> messages) => ErrorResult.CreateError(code, messages);
 }
